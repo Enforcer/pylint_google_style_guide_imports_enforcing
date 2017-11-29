@@ -18,8 +18,10 @@ How to use it?
 After installing a package just run `pylint`, appending `pylint_google_style_guide_imports_enforcing` to your `--load-plugins` option.
 
 An example::
+
     pylint my_cool_project --load-plugins=pylint_google_style_guide_imports_enforcing
 
 or append it to your `pylintrc` file::
+
     [MASTER]
     load-plugins=pylint_google_style_guide_imports_enforcing
