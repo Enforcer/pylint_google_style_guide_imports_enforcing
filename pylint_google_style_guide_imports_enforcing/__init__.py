@@ -29,7 +29,13 @@ class AlphabeticallySortedImports(BaseChecker):
                 # it's not there, so probably this is another module - fine.
                 continue
             imported_node, *_ = result
-            if not isinstance(imported_node, scoped_nodes.Module):
+            if isinstance(imported_node, scoped_nodes.Module):
+                continue
+
+            # maybe a submodule?
+            try:
+                imported.import_module(name, relative_only=True)
+            except astroid.AstroidImportError:
                 self.add_message(
                     self.ONLY_IMPORTING_MODULES_IS_ALLOWED,
                     node=node,
