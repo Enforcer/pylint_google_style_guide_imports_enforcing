@@ -21,8 +21,14 @@ class AlphabeticallySortedImports(BaseChecker):
 
     priority = -1
 
+    excluded_modules = ['typing', 'typing_extensions', 'six.moves']
+
     def visit_importfrom(self, node):
         imported = node.do_import_module()
+
+        if imported.name in self.excluded_modules:
+            return
+
         for name, _ in node.names:
             _, result = imported.lookup(name)
             if not result:
@@ -44,4 +50,3 @@ class AlphabeticallySortedImports(BaseChecker):
 
 def register(linter):
     linter.register_checker(AlphabeticallySortedImports(linter))
-
