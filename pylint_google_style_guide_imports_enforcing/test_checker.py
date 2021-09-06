@@ -7,7 +7,7 @@ from pylint_google_style_guide_imports_enforcing import AlphabeticallySortedImpo
 class TestAlphabeticallySortedImports(pylint.testutils.CheckerTestCase):
     CHECKER_CLASS = AlphabeticallySortedImports
 
-    def test_import_exceptions_with_proper_imports(self):
+    def test_doesnt_report_direct_imports_from_excluded_modules(self):
         importnode = astroid.extract_node("""
         from typing import Optional
         from os import path
@@ -18,7 +18,7 @@ class TestAlphabeticallySortedImports(pylint.testutils.CheckerTestCase):
         with self.assertNoMessages():
             self.checker.visit_importfrom(importnode)
 
-    def test_import_exceptions_with_improper_imports(self):
+    def test_reports_direct_imports(self):
         node = astroid.extract_node("""
             from typing import Optional
             from json import loads

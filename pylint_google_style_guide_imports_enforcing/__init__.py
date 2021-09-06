@@ -26,25 +26,27 @@ class AlphabeticallySortedImports(BaseChecker):
     def visit_importfrom(self, node):
         imported = node.do_import_module()
 
-        if imported.name not in self.excluded_modules:
-            for name, _ in node.names:
-                _, result = imported.lookup(name)
-                if not result:
-                    # it's not there, so probably this is another module - fine.
-                    continue
-                imported_node, *_ = result
-                if isinstance(imported_node, scoped_nodes.Module):
-                    continue
+        if imported.name in self.excluded_modules:
+            return
 
-                # maybe a submodule?
-                try:
-                    imported.import_module(name, relative_only=True)
-                except astroid.AstroidImportError:
-                    self.add_message(
-                        self.ONLY_IMPORTING_MODULES_IS_ALLOWED,
-                        node=node,
-                        args=(name, )
-                    )
+        for name, _ in node.names:
+            _, result = imported.lookup(name)
+            if not result:
+                # it's not there, so probably this is another module - fine.
+                continue
+            imported_node, *_ = result
+            if isinstance(imported_node, scoped_nodes.Module):
+                continue
+
+            # maybe a submodule?
+            try:
+                imported.import_module(name, relative_only=True)
+            except astroid.AstroidImportError:
+                self.add_message(
+                    self.ONLY_IMPORTING_MODULES_IS_ALLOWED,
+                    node=node,
+                    args=(name, )
+                )
 
 def register(linter):
     linter.register_checker(AlphabeticallySortedImports(linter))
