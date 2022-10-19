@@ -1,11 +1,11 @@
 import astroid
 import pylint.testutils
 
-from pylint_google_style_guide_imports_enforcing import AlphabeticallySortedImports
+from pylint_google_style_guide_imports_enforcing import ModuleOnlyImports
 
 
 class TestAlphabeticallySortedImports(pylint.testutils.CheckerTestCase):
-    CHECKER_CLASS = AlphabeticallySortedImports
+    CHECKER_CLASS = ModuleOnlyImports
 
     def test_doesnt_report_direct_imports_from_excluded_modules(self):
         importnode = astroid.extract_node("""
@@ -25,10 +25,14 @@ class TestAlphabeticallySortedImports(pylint.testutils.CheckerTestCase):
             """)
 
         with self.assertAddsMessages(
-            pylint.testutils.Message(
+            pylint.testutils.MessageTest(
                 msg_id="only-importing-modules-is-allowed",
                 node=node,
-                args=("loads",)
+                args=("loads",),
+                line=3,
+                col_offset=0,
+                end_line=3,
+                end_col_offset=22,
             )
         ):
             self.checker.visit_importfrom(node)
