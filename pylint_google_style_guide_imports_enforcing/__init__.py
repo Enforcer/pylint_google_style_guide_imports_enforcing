@@ -20,7 +20,7 @@ class ModuleOnlyImports(BaseChecker):
 
     priority = -1
 
-    excluded_modules = ['typing', 'typing_extensions', 'six.moves']
+    excluded_modules = ['typing', 'typing_extensions', 'six.moves', '__future__']
 
     def visit_importfrom(self, node):
         imported = node.do_import_module()
