@@ -5,22 +5,22 @@ from pylint.checkers import BaseChecker
 
 
 class ModuleOnlyImports(BaseChecker):
-    name = 'check-if-we-import-only-modules'
+    name = "check-if-we-import-only-modules"
 
-    ONLY_IMPORTING_MODULES_IS_ALLOWED = 'only-importing-modules-is-allowed'
+    ONLY_IMPORTING_MODULES_IS_ALLOWED = "only-importing-modules-is-allowed"
 
     msgs = {
-        'C5101': (
+        "C5101": (
             '"%s" shouldn\'t be imported directly.',
             ONLY_IMPORTING_MODULES_IS_ALLOWED,
-            ''
+            "",
         ),
     }
     options = ()
 
     priority = -1
 
-    excluded_modules = ['typing', 'typing_extensions', 'six.moves', '__future__']
+    excluded_modules = ["typing", "typing_extensions", "six.moves", "__future__"]
 
     def visit_importfrom(self, node):
         imported = node.do_import_module()
@@ -42,9 +42,7 @@ class ModuleOnlyImports(BaseChecker):
                 imported.import_module(name, relative_only=True)
             except astroid.AstroidImportError:
                 self.add_message(
-                    self.ONLY_IMPORTING_MODULES_IS_ALLOWED,
-                    node=node,
-                    args=(name, )
+                    self.ONLY_IMPORTING_MODULES_IS_ALLOWED, node=node, args=(name,)
                 )
 
 

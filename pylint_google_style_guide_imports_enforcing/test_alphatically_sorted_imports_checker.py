@@ -8,21 +8,25 @@ class TestAlphabeticallySortedImports(pylint.testutils.CheckerTestCase):
     CHECKER_CLASS = ModuleOnlyImports
 
     def test_doesnt_report_direct_imports_from_excluded_modules(self):
-        importnode = astroid.extract_node("""
+        importnode = astroid.extract_node(
+            """
         from typing import Optional
         from os import path
         from typing_extensions import get_args
         from six.moves import html_parser
-        """)
+        """
+        )
 
         with self.assertNoMessages():
             self.checker.visit_importfrom(importnode)
 
     def test_reports_direct_imports(self):
-        node = astroid.extract_node("""
+        node = astroid.extract_node(
+            """
             from typing import Optional
             from json import loads
-            """)
+            """
+        )
 
         with self.assertAddsMessages(
             pylint.testutils.MessageTest(
