@@ -10,6 +10,7 @@ class TestAlphabeticallySortedImports(pylint.testutils.CheckerTestCase):
     def test_doesnt_report_direct_imports_from_excluded_modules(self):
         importnode = astroid.extract_node(
             """
+        from collections.abc import Mapping, Sequence
         from typing import Optional
         from os import path
         from typing_extensions import get_args
